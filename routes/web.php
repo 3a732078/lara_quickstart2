@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/tasks',[\App\Models\tasks::class],
+'index')->name('tasks.index');
 
+Route::post('/task',[\App\Models\tasks::class,
+    'store'])->name('task/store');
+
+Route::delete('task/{task}',[\App\Models\tasks::class,
+'destroy'])->name('task.destroy');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
