@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class TasksController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,11 +20,7 @@ class TasksController extends Controller
     public function index()
     {
         //
-    }
-
-    public function __construct()
-    {
-        $this->middleware('auth');
+        return view('task.index');
     }
 
     /**
@@ -30,6 +31,7 @@ class TasksController extends Controller
     public function create()
     {
         //
+        return view('task.create');
     }
 
     /**
@@ -40,7 +42,9 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name'=>'required|max:255',
+        ]);
     }
 
     /**
@@ -51,7 +55,7 @@ class TasksController extends Controller
      */
     public function show(tasks $tasks)
     {
-        //
+
     }
 
     /**
@@ -74,7 +78,9 @@ class TasksController extends Controller
      */
     public function update(Request $request, tasks $tasks)
     {
-        //
+        $this->authorize('destroy',$tasks);
+        $tasks->delete();
+        return redirect()->route('task.index');
     }
 
     /**
