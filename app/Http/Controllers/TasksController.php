@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\tasks;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TasksController extends Controller
@@ -17,10 +18,13 @@ class TasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return view('tasks.index');
+        $tasks = tasks::where('id',
+            $request->user()->id)->get();
+        return view('tasks.index',
+            ['tasks' => $tasks]);
     }
 
     /**
@@ -28,11 +32,6 @@ class TasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-        return view('tasks.create');
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -45,6 +44,12 @@ class TasksController extends Controller
         $this->validate($request,[
             'name'=>'required|max:255',
         ]);
+
+        $request->user()->tasks()->create([
+            'name'=> $request->name,
+        ]);
+
+        return redirect('tasks');
     }
 
     /**
@@ -78,9 +83,7 @@ class TasksController extends Controller
      */
     public function update(Request $request, tasks $tasks)
     {
-        $this->authorize('destroy',$tasks);
-        $tasks->delete();
-        return redirect()->route('tasks.index');
+
     }
 
     /**
@@ -89,8 +92,11 @@ class TasksController extends Controller
      * @param  \App\Models\tasks  $tasks
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tasks $tasks)
+    public function destroy(Request $request,tasks $task)
     {
-        //
+       
+        $task->delete();
+
+        return redirect()->route('tasks.index');
     }
 }
