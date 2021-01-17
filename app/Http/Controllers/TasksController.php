@@ -20,7 +20,7 @@ class TasksController extends Controller
     public function index()
     {
         //
-        return view('task.index');
+        return view('tasks.index');
     }
 
     /**
@@ -31,7 +31,7 @@ class TasksController extends Controller
     public function create()
     {
         //
-        return view('task.create');
+        return view('tasks.create');
     }
 
     /**
@@ -80,7 +80,7 @@ class TasksController extends Controller
     {
         $this->authorize('destroy',$tasks);
         $tasks->delete();
-        return redirect()->route('task.index');
+        return redirect()->route('tasks.index');
     }
 
     /**

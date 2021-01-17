@@ -17,14 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/tasks',[\App\Models\tasks::class],
-'index')->name('tasks.index');
+Route::get('/tasks',[\App\Http\Controllers\TasksController::class,
+'index'])->name('tasks.index');
 
-Route::post('/task',[\App\Models\tasks::class,
-    'store'])->name('task/store');
+Route::post('/tasks',[\App\Http\Controllers\TasksController::class,
+    'store'])->name('tasks/store');
 
-Route::delete('task/{task}',[\App\Models\tasks::class,
-'destroy'])->name('task.destroy');
+Route::delete('tasks/{task}',[\App\Http\Controllers\TasksControllertasks::class,
+'destroy'])->name('tasks.destroy');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
